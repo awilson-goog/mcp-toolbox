@@ -203,10 +203,10 @@ func TestMcpAuth(t *testing.T) {
 			wantStatusCode: http.StatusOK,
 		},
 		{
-			name:           "403 Forbidden with insufficient tool scopes",
-			token:          tokenOnlyReadStr,
-			method:         http.MethodPost,
-			url:            apiMCP,
+			name:   "403 Forbidden with insufficient tool scopes",
+			token:  tokenOnlyReadStr,
+			method: http.MethodPost,
+			url:    apiMCP,
 			body: func() []byte {
 				b, _ := json.Marshal(map[string]any{
 					"jsonrpc": "2.0",
@@ -229,10 +229,10 @@ func TestMcpAuth(t *testing.T) {
 			},
 		},
 		{
-			name:           "200 OK with sufficient tool scopes",
-			token:          tokenBothStr,
-			method:         http.MethodPost,
-			url:            apiMCP,
+			name:   "200 OK with sufficient tool scopes",
+			token:  tokenBothStr,
+			method: http.MethodPost,
+			url:    apiMCP,
 			body: func() []byte {
 				b, _ := json.Marshal(map[string]any{
 					"jsonrpc": "2.0",
@@ -291,5 +291,3 @@ func TestMcpAuth(t *testing.T) {
 		})
 	}
 }
-
-
