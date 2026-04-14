@@ -532,7 +532,7 @@ func mcpAuthMiddleware(s *Server) func(http.Handler) http.Handler {
 				return
 			}
 
-			ctx := util.WithMcpClaims(r.Context(), claims)
+			ctx := util.WithAuthTokenClaims(r.Context(), claims)
 			r = r.WithContext(ctx)
 
 			next.ServeHTTP(w, r)
