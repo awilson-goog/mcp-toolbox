@@ -509,7 +509,8 @@ func mcpAuthMiddleware(s *Server) func(http.Handler) http.Handler {
 				return
 			}
 
-			if err := mcpSvc.ValidateMCPAuth(r.Context(), r.Header); err != nil {
+			claims, err := mcpSvc.ValidateMCPAuth(r.Context(), r.Header)
+			if err != nil {
 				var mcpErr *generic.MCPAuthError
 				if errors.As(err, &mcpErr) {
 					switch mcpErr.Code {
@@ -527,7 +528,12 @@ func mcpAuthMiddleware(s *Server) func(http.Handler) http.Handler {
 						return
 					}
 				}
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
 			}
+
+			ctx := util.WithMcpClaims(r.Context(), claims)
+			r = r.WithContext(ctx)
 
 			next.ServeHTTP(w, r)
 		})
